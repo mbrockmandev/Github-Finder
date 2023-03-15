@@ -22,6 +22,4 @@ function UserResults() {
 
 }
 
-// UserResults.propTypes = {}
-
 export default UserResults
