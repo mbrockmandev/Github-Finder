@@ -1,16 +1,15 @@
 import React from 'react'
 import UserResults from '../components/users/UserResults'
-// import PropTypes from 'prop-types'
+import UserSearch from '../components/users/UserSearch';
+
 
 function Home() {
   return (
     <>
-    {/* Search component */}
+    <UserSearch />
       <UserResults />
     </>
   )
 }
-
-// Home.propTypes = {}
 
 export default Home
