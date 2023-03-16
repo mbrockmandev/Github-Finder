@@ -4,16 +4,29 @@ import { useParams, Link } from "react-router-dom";
 import Spinner from '../components/layout/Spinner';
 import GithubContext from "../context/github/GithubContext"
 import RepoList from '../components/repos/RepoList';
+import { getUser, getUserRepos } from '../context/github/GithubActions'
 
 const User = () => {
-  const { getUserRepos, repos, getUser, user, loading } = useContext(GithubContext)
+  const { repos, user, loading, dispatch } = useContext(GithubContext)
 
   const params = useParams()
 
   useEffect(() => {
-    getUser(params.login)
-    getUserRepos(params.login)   
-  }, [])
+    dispatch({type: 'SET_LOADING'})
+
+    const getUserData = async () => {
+      const userData = await getUser(params.login)
+      dispatch({ type: 'GET_USER', payload: userData })
+    }
+
+    const getUserRepoData = async () => {
+      const userRepoData = await getUserRepos(params.login)
+      dispatch({ type: 'GET_USER_REPOS', payload: userRepoData })
+    }
+
+    getUserData()
+    getUserRepoData()
+  }, [dispatch, params.login])
   
   const { 
     name, type, avatar_url, location, bio, blog, twitter_username, login, html_url, followers, following, public_repos, public_gists, hireable,
@@ -38,10 +51,10 @@ const User = () => {
                 <img src={avatar_url} alt="" />
               </figure>
               <div className="card-body justify-end">
-                <h2 className="card-title mb-0">
+                <h2 className="card-title mb-0 text-white text-opacity-70">
                   {name}
                 </h2>
-                <p className='flex-grow-0'>{login}</p>
+                <p className='flex-grow-0 text-white text-opacity-70'>{login}</p>
               </div>
             </div>
           </div>
